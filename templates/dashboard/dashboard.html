@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Dashboard — UMKM</title>
+	<link rel="stylesheet" href="/static/css/style.css">
+	<script defer src="/static/js/ui.js"></script>
+</head>
+<body>
+	<div class="container">
+		<header class="site-header">
+			<div class="brand">
+				<div class="logo">EH</div>
+				<h1>UMKM Esteh & Hotdog</h1>
+			</div>
+			<div>
+				<a href="/logout" class="muted">Logout</a>
+			</div>
+		</header>
+
+		<div class="layout">
+			<aside class="sidebar card">
+				<nav>
+					<a class="nav-item active" href="/dashboard">Dashboard</a>
+					<a class="nav-item" href="/pos">POS</a>
+					<a class="nav-item" href="/stok">Stok</a>
+				</nav>
+			</aside>
+
+			<main class="main">
+				<section class="grid">
+					<div class="card stat">
+						<div class="label muted">Pendapatan</div>
+						<div class="value">Rp {{ total_sales or 0 }}</div>
+					</div>
+					<div class="card stat">
+						<div class="label muted">Transaksi</div>
+						<div class="value">{{ total_orders or 0 }}</div>
+					</div>
+					<div class="card stat">
+						<div class="label muted">Produk</div>
+						<div class="value">{{ total_products or 0 }}</div>
+					</div>
+				</section>
+
+				<section class="card">
+					<h3>Transaksi Terbaru</h3>
+					<div style="overflow:auto">
+						<table class="table">
+							<thead><tr><th>ID</th><th>Pelanggan</th><th>Total</th><th>Waktu</th></tr></thead>
+							<tbody>
+								{% for t in recent_transactions or [] %}
+								<tr>
+									<td>{{ t.id }}</td>
+									<td>{{ t.customer or '-' }}</td>
+									<td>Rp {{ t.total }}</td>
+									<td>{{ t.time }}</td>
+								</tr>
+								{% else %}
+								<tr><td colspan="4" class="muted">Tidak ada transaksi</td></tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</section>
+			</main>
+		</div>
+	</div>
+</body>
+</html>
+

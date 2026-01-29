@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Stok — UMKM</title>
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<div class="container">
+		<header class="site-header">
+			<div class="brand"><div class="logo">EH</div><h1>Stok</h1></div>
+			<div><a href="/logout" class="muted">Logout</a></div>
+		</header>
+
+		<div class="card">
+
+			<!-- FORM TAMBAH STOK -->
+            <form method="POST" style="margin-bottom:16px">
+                <h3>Tambah Stok</h3>
+                <div class="form-row">
+                    <input type="text" name="name" placeholder="Nama produk" required>
+                    <input type="text" name="sku" placeholder="SKU produk" required>
+                    <input type="number" name="qty" placeholder="Jumlah stok" required>
+                    <button class="btn btn-primary" type="submit" name="action" value="add">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+
+			<hr>
+
+			<!-- TABEL STOK -->
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Produk</th>
+						<th>SKU</th>
+						<th>Stok</th>
+					</tr>
+				</thead>			
+            <tbody>
+            {% for s in stok_items %}
+            <tr>
+                <td>{{ s.name }}</td>
+                <td>{{ s.sku }}</td>
+                <td>{{ s.qty }}</td>
+                <td style="display:flex;gap:6px">
+
+                <!-- UPDATE MANUAL -->
+                <form method="POST">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" value="{{ s.id }}">
+                    <input type="number" name="qty" value="{{ s.qty }}" min="0" style="width:70px">
+                    <button class="btn btn-primary">Update</button>
+                </form>
+
+
+                <!-- HAPUS ITEM -->
+                <form method="POST" onsubmit="return confirm('Yakin hapus produk ini?')">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="id" value="{{ s.id }}">
+                    <button class="btn btn-danger">Hapus</button>
+                </form>
+
+            </td>
+
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="muted">Belum ada data stok</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+			</table>
+
+		</div>
+	</div>
+</body>
+</html>
